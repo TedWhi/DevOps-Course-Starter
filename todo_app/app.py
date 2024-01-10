@@ -11,3 +11,11 @@ app.config.from_object(Config())
 def index():
     items = get_items()
     return render_template('index.html', items=items)
+
+@app.route('/create', methods=['POST'])
+def create():
+    title = request.form.get('title')
+    add_item(title)
+
+    return redirect('/')
+    
