@@ -8,25 +8,30 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8">
       <h2>Items</h2>
-      <ul class="list-group mb-4">
+      <ul class="list-group list-group-flush mb-4">
         {% for item in items %}
-          <li>{{ item.title }}</li>
+          <form action="/{{item.id}}/complete" method="post">
+            <input class="list-group-item list-group-item-action" type="submit" value="{{ item.title }} — {{item.status}} " />
+          </form> 
         {% endfor %}
       </ul>
     </div>
+    <div class="col-md-4">
+      <h2>Add new item</h2>
+      <form action="/create" method="post" class="form-example">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input class="form-control" type="text" name="title" id="title" required />
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" type="submit" value="Add item" />
+        </div>
+      </form>
+    </div>
   </div>
 
-  <div class="row">
-    <form action="/create" method="post" class="form-example">
-      <div class="form-example">
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title" required />
-      </div>
-      <div class="form-example">
-        <input type="submit" value="Add item" />
-      </div>
-    </form>
-  </div>
+  
+    
 {% endblock %}
