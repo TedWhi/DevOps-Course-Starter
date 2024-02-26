@@ -11,7 +11,7 @@
     <div class="col-md-8">
       <h2>Items</h2>
       <ul class="list-group list-group-flush mb-4">
-        {% for item in items|sort(attribute="status", reverse=True) %}
+        {% for item in items %}
           <form action="/{{item.id}}/complete" method="post">
             <input class="list-group-item list-group-item-action" type="submit" value="{{ item.title }} — {{item.status}} " />
           </form> 
