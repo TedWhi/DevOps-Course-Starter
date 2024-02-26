@@ -13,7 +13,7 @@
       <ul class="list-group list-group-flush mb-4">
         {% for item in items %}
           <form action="/{{item.id}}/complete" method="post">
-            <input class="list-group-item list-group-item-action" type="submit" value="{{ item.title }} — {{item.status}} " />
+            <input class="list-group-item list-group-item-action" type="submit" value="{{ item.name }} — {{item.status}} " />
           </form> 
         {% endfor %}
       </ul>

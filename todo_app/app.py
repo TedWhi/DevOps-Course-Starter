@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 
 from todo_app.flask_config import Config
-from todo_app.data.session_items import get_items, add_item, get_item, save_item 
+from todo_app.data.trello_items import get_items, add_item, get_item, save_item 
 
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -10,7 +10,7 @@ app.config.from_object(Config())
 @app.route('/')
 def index():
     items = get_items()
-    sorted_items = sorted(items, key = lambda item: item['status'], reverse = True)
+    sorted_items = sorted(items, key = lambda item: item.status, reverse = True)
     return render_template('index.html', items=sorted_items)
 
 @app.route('/create', methods=['POST'])
@@ -20,10 +20,10 @@ def create():
 
     return redirect('/')
 
-@app.route('/<int:id>/complete/', methods=['POST'])
+@app.route('/<string:id>/complete/', methods=['POST'])
 def complete(id):
     item = get_item(id)
-    item['status'] = "Completed"
+    item.status = "Completed"
     save_item(item)
     
     return redirect('/') 
