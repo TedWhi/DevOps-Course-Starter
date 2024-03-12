@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 
+from todo_app.models.item import Status
 from todo_app.flask_config import Config
 from todo_app.data.trello_items import TrelloService
 from todo_app.view_model import ViewModel
@@ -26,7 +27,7 @@ def create():
 @app.route('/<string:id>/complete/', methods=['POST'])
 def complete(id):
     item = trello_service.get_item(id)
-    item.status = trello_service.COMPLETED_LIST_NAME
+    item.status = Status.COMPLETED
     trello_service.save_item(item)
     
     return redirect('/') 

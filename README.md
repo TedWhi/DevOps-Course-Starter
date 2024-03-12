@@ -49,6 +49,8 @@ Once you've done this, create a board for your dev environment To-do list, and g
 
 Now you have an API Key, API Token, and your board ID, replace the template values in your `.env` file.
 
+Finally, you should ensure that the values specified in the `Status` enum in `models/item.py` match the names of the lists in your Trello board.
+
 ## Running the App
 
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
