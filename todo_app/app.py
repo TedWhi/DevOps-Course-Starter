@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 
 from todo_app.flask_config import Config
 from todo_app.data.trello_items import TrelloService
+from todo_app.view_model import ViewModel
 
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -12,7 +13,8 @@ trello_service = TrelloService()
 def index():
     items = trello_service.get_items()
     sorted_items = sorted(items, key = lambda item: item.status, reverse = True)
-    return render_template('index.html', items=sorted_items)
+    item_view_model = ViewModel(sorted_items)
+    return render_template('index.html', view_model=item_view_model)
 
 @app.route('/create', methods=['POST'])
 def create():
