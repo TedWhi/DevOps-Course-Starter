@@ -27,5 +27,5 @@ class Item:
         return cls(
             id=trello_card['id'],
             name=trello_card['name'],
-            status=list_name
+            status=Status(list_name)
         )

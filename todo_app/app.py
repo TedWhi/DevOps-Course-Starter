@@ -13,8 +13,7 @@ trello_service = TrelloService()
 @app.route('/')
 def index():
     items = trello_service.get_items()
-    sorted_items = sorted(items, key = lambda item: item.status, reverse = True)
-    item_view_model = ViewModel(sorted_items)
+    item_view_model = ViewModel(sorted(items, key=lambda item: item.name))
     return render_template('index.html', view_model=item_view_model)
 
 @app.route('/create', methods=['POST'])
