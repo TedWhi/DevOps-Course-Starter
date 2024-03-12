@@ -60,14 +60,13 @@ class TrelloService():
             'token': self.TRELLO_API_TOKEN
         }
 
-        response = requests.request(
-            "POST",
+        response = requests.post(
             url,
             headers=headers,
             params=query
         )
 
-        return Item.from_trello_card_and_list_name(json.loads(response.text), to_do_list["name"])
+        return Item.from_trello_card_and_list_name(response.json(), to_do_list["name"])
 
     def get_item(self, id: str) -> Item:
         """
@@ -104,8 +103,7 @@ class TrelloService():
             'idList': updated_list_id
         }
 
-        requests.request(
-            "PUT",
+        requests.put(
             url,
             headers=headers,
             params=query
@@ -129,11 +127,10 @@ class TrelloService():
             'card_fields': 'id,name'
         }
 
-        response = requests.request(
-            "GET",
+        response = requests.get(
             url,
             headers=headers,
             params=query
         )
 
-        return json.loads(response.text)
+        return response.json()
