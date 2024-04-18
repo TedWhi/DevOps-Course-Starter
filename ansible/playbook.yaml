@@ -1,5 +1,54 @@
 ---
-- name: Intall and Run To-Do App
-  hosts: webservers
-  remote_user: ec2-user
+- name: Setup To-Do App Environment
+  hosts: all
+  become: yes
   tasks:
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+
+    - name: Install Python 3
+      yum:
+        name: python3
+        state: present
+
+    - name: Check if Poetry is installed
+      shell: poetry --version
+      args:
+        creates: /usr/local/bin/poetry
+      register: poetry_check
+      ignore_errors: yes
+
+    - name: Install Poetry
+      shell: curl -sSL https://install.python-poetry.org | python3 -
+      args:
+        creates: /usr/local/bin/poetry
+      when: poetry_check.rc != 0
+
+    - name: Create directory for To-Do App code
+      file:
+        path: /opt/todoapp
+        state: directory
+        owner: ec2-user
+        group: ec2-user
+
+    - name: Get latest version of code with Git
+      git:
+        repo: https://github.com/TedWhi/DevOps-Course-Starter/
+        dest: /opt/todoapp
+        version: exercise-4
+        force: yes
+
+    - name: Install project dependencies with Poetry
+      shell: poetry install
+      args:
+        chdir: /opt/todoapp
+
+    - name: Create .env file on the host
+      template:
+        src: .env.j2
+        dest: /opt/todoapp/.env
+        owner: ec2-user
+        group: ec2-user
+        mode: '0644'
