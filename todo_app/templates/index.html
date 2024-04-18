@@ -8,13 +8,21 @@
   </div>
 
   <div class="row">
-    <div class="col-md-8">
-      <h2>Items</h2>
+    <div class="col-md-4">
+      <h2>To-Do</h2>
       <ul class="list-group list-group-flush mb-4">
-        {% for item in items %}
+        {% for item in view_model.todo_items %}
           <form action="/{{item.id}}/complete" method="post">
-            <input class="list-group-item list-group-item-action" type="submit" value="{{ item.name }} — {{item.status}} " />
+            <input class="list-group-item list-group-item-action" type="submit" value="{{ item.name }}" />
           </form> 
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <h2>Completed</h2>
+      <ul class="list-group list-group-flush mb-4">
+        {% for item in view_model.done_items %}
+          <li class="list-group-item list-group-item-action"> {{ item.name }}</li>
         {% endfor %}
       </ul>
     </div>

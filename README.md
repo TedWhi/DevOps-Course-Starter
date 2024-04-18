@@ -49,6 +49,8 @@ Once you've done this, create a board for your dev environment To-do list, and g
 
 Now you have an API Key, API Token, and your board ID, replace the template values in your `.env` file.
 
+Finally, you should ensure that the values specified in the `Status` enum in `models/item.py` match the names of the lists in your Trello board.
+
 ## Running the App
 
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
@@ -68,3 +70,13 @@ Press CTRL+C to quit
  * Debugger PIN: 113-666-066
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Unit Tests
+
+The repo uses [pytest](https://docs.pytest.org/en/8.0.x/) to implement its unit tests. Any new test files added to the `tests`
+should mirror the directory structure of the `todo_app` folder. All test files name's must be prefixed with `test`.
+
+To run the unit tests, simply run:
+```bash
+poetry run pytest
+```

@@ -4,9 +4,7 @@ import functools
 
 import requests
 
-from todo_app.models.item import Item
-
-
+from todo_app.models.item import Item, Status
 
 class TrelloService():
     
@@ -14,8 +12,6 @@ class TrelloService():
         self.BOARD_ID = os.getenv("TRELLO_BOARD_ID")
         self.TRELLO_API_KEY = os.getenv("TRELLO_API_KEY")
         self.TRELLO_API_TOKEN = os.getenv("TRELLO_API_TOKEN")
-        self.TO_DO_LIST_NAME = "To-do"
-        self.COMPLETED_LIST_NAME = "Completed"
         self.lists = None
     
     @functools.cached_property
@@ -49,7 +45,7 @@ class TrelloService():
         Returns:
             item: The saved item.
         """
-        to_do_list = [trello_list for trello_list in self._lists if trello_list.get("name") == self.TO_DO_LIST_NAME][0]
+        to_do_list = [trello_list for trello_list in self._lists if trello_list.get("name") == Status.TODO.value][0]
 
         url = "https://api.trello.com/1/cards"
 
@@ -64,14 +60,13 @@ class TrelloService():
             'token': self.TRELLO_API_TOKEN
         }
 
-        response = requests.request(
-            "POST",
+        response = requests.post(
             url,
             headers=headers,
             params=query
         )
 
-        return Item.from_trello_card_and_list_name(json.loads(response.text), to_do_list["name"])
+        return Item.from_trello_card_and_list_name(response.json(), to_do_list["name"])
 
     def get_item(self, id: str) -> Item:
         """
@@ -93,7 +88,7 @@ class TrelloService():
         Args:
             item: The item to save.
         """
-        updated_list_id = [trello_list for trello_list in self._lists if trello_list.get("name") == item.status][0]['id']
+        updated_list_id = [trello_list for trello_list in self._lists if trello_list.get("name") == item.status.value][0]['id']
         
         url = f"https://api.trello.com/1/cards/{item.id}"
 
@@ -108,8 +103,7 @@ class TrelloService():
             'idList': updated_list_id
         }
 
-        requests.request(
-            "PUT",
+        requests.put(
             url,
             headers=headers,
             params=query
@@ -133,11 +127,10 @@ class TrelloService():
             'card_fields': 'id,name'
         }
 
-        response = requests.request(
-            "GET",
+        response = requests.get(
             url,
             headers=headers,
             params=query
         )
 
-        return json.loads(response.text)
+        return response.json()

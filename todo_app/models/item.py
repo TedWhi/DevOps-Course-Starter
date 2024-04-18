@@ -1,8 +1,14 @@
+from enum import Enum
+
+class Status(Enum):
+    COMPLETED = "Completed"
+    TODO = "To-do"
+
 class Item:
     """
     This class represent
     """
-    def __init__(self, id: str, name: str, status: str = 'To Do'):
+    def __init__(self, id: str, name: str, status: Status = Status.TODO):
         self.id = id
         self.name = name
         self.status = status
@@ -21,5 +27,5 @@ class Item:
         return cls(
             id=trello_card['id'],
             name=trello_card['name'],
-            status=list_name
+            status=Status(list_name)
         )
