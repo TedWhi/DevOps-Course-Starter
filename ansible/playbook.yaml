@@ -1,30 +1,30 @@
 ---
 - name: Setup To-Do App Environment
   hosts: all
-  become: yes
+  vars_prompt:
+    - name: trello_api_token
+      prompt: Enter Trello API token
+    - name: trello_api_key
+      prompt: Enter Trello API key
+    - name: trello_board_id
+      prompt: Enter Trello Board ID
   tasks:
     - name: Install Git
       yum:
         name: git
         state: present
+      become: yes
 
     - name: Install Python 3
       yum:
         name: python3
         state: present
-
-    - name: Check if Poetry is installed
-      shell: poetry --version
-      args:
-        creates: /usr/local/bin/poetry
-      register: poetry_check
-      ignore_errors: yes
+      become: yes
 
     - name: Install Poetry
       shell: curl -sSL https://install.python-poetry.org | python3 -
       args:
-        creates: /usr/local/bin/poetry
-      when: poetry_check.rc != 0
+        creates: ~/.local/bin/poetry
 
     - name: Create directory for To-Do App code
       file:
@@ -39,15 +39,16 @@
         dest: /opt/todoapp
         version: exercise-4
         force: yes
+      become: yes
 
     - name: Install project dependencies with Poetry
-      shell: poetry install
+      shell: ~/.local/bin/poetry install
       args:
         chdir: /opt/todoapp
 
     - name: Create .env file on the host
       template:
-        src: .env.j2
+        src: /opt/todoapp/ansible/.env.j2
         dest: /opt/todoapp/.env
         owner: ec2-user
         group: ec2-user
