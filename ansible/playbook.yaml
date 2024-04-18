@@ -1,0 +1,5 @@
+---
+- name: Intall and Run To-Do App
+  hosts: webservers
+  remote_user: ec2-user
+  tasks:
