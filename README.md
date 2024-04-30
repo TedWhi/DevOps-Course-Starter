@@ -85,7 +85,9 @@ Once this is done, `ssh` into that control node, `cd` to the directory you copie
 ansible-playbook ansible/playbook.yaml -i ansible/inventory
 ```
 
-You will then be able to access the app at port 5000 on the IP address of your managed node.
+This will then prompt you to enter a Trello API Token, Trello API Key, and Trello Board ID (see the *Trello* section of the README for how to get these values), once these have been enterred, the playbook will run.
+
+When the playbook has completed, you will then be able to access the app at port 5000 on the IP address of your managed node.
 
 ## Unit Tests
 
