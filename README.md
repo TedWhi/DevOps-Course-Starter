@@ -51,7 +51,7 @@ Now you have an API Key, API Token, and your board ID, replace the template valu
 
 Finally, you should ensure that the values specified in the `Status` enum in `models/item.py` match the names of the lists in your Trello board.
 
-## Running the App
+## Running the App locally
 
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
 ```bash
@@ -70,6 +70,22 @@ Press CTRL+C to quit
  * Debugger PIN: 113-666-066
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Running the App on a VM using Ansible
+
+To run the To-Do App as a service on a managed node from a control node using Ansible, first, you should set up and copy the necessary files from the `ansible` folder on the control node.
+
+Edit `ansible/inventory` to include the IP address of your managed none, then use the following command to copy the files to your control node.
+```sh
+scp -r ./ansible <control-node-user>@<control-node-host>:<path-to-directory-you-would-like-to-copy-to>
+```
+
+Once this is done, `ssh` into that control node, `cd` to the directory you copied the ansible files to, and run the following command:
+```sh
+ansible-playbook ansible/playbook.yaml -i ansible/inventory
+```
+
+You will then be able to access the app at port 5000 on the IP address of your managed node.
 
 ## Unit Tests
 
