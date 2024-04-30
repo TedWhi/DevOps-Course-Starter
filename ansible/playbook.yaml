@@ -48,8 +48,18 @@
 
     - name: Create .env file on the host
       template:
-        src: /opt/todoapp/ansible/.env.j2
+        src: ~/ansible/.env.j2
         dest: /opt/todoapp/.env
-        owner: ec2-user
-        group: ec2-user
-        mode: '0644'
+
+    - name: Copy Todo-App service
+      copy:
+        src: ~/ansible/todoapp.service
+        dest: /etc/systemd/system/todoapp.service
+      become: yes
+
+    - name: Start Todo-App service
+      systemd:
+        name: todoapp
+        daemon_reload: true
+        state: restarted
+      become: yes
