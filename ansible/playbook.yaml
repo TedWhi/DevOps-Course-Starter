@@ -1,0 +1,61 @@
+---
+- name: Setup To-Do App Environment
+  hosts: all
+  vars_prompt:
+    - name: trello_api_token
+      prompt: Enter Trello API token
+    - name: trello_api_key
+      prompt: Enter Trello API key
+    - name: trello_board_id
+      prompt: Enter Trello Board ID
+  tasks:
+    - name: Install Git  & Python
+      yum:
+        name: 
+          - git
+          - python3
+        state: present
+      become: yes
+
+    - name: Install Poetry
+      shell: curl -sSL https://install.python-poetry.org | python3 -
+      args:
+        creates: ~/.local/bin/poetry
+
+    - name: Create directory for To-Do App code
+      file:
+        path: /opt/todoapp
+        state: directory
+        owner: ec2-user
+        group: ec2-user
+
+    - name: Get latest version of code with Git
+      git:
+        repo: https://github.com/TedWhi/DevOps-Course-Starter/
+        dest: /opt/todoapp
+        version: exercise-4
+        force: yes
+      become: yes
+
+    - name: Install project dependencies with Poetry
+      shell: ~/.local/bin/poetry install
+      args:
+        chdir: /opt/todoapp
+
+    - name: Create .env file on the host
+      template:
+        src: ~/ansible/.env.j2
+        dest: /opt/todoapp/.env
+
+    - name: Copy Todo-App service
+      copy:
+        src: ~/ansible/todoapp.service
+        dest: /etc/systemd/system/todoapp.service
+      become: yes
+
+    - name: Start Todo-App service
+      systemd:
+        name: todoapp
+        daemon_reload: true
+        state: restarted
+      become: yes

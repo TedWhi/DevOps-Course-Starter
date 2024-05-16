@@ -1,13 +1,11 @@
 from flask import Flask, render_template, request, redirect
 
 from todo_app.models.item import Status
-from todo_app.flask_config import Config
 from todo_app.data.trello_items import TrelloService
 from todo_app.view_model import ViewModel
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config())
     trello_service = TrelloService()
 
     @app.route('/')
