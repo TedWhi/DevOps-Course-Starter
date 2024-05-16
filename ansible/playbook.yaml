@@ -9,15 +9,11 @@
     - name: trello_board_id
       prompt: Enter Trello Board ID
   tasks:
-    - name: Install Git
+    - name: Install Git  & Python
       yum:
-        name: git
-        state: present
-      become: yes
-
-    - name: Install Python 3
-      yum:
-        name: python3
+        name: 
+          - git
+          - python3
         state: present
       become: yes
 
