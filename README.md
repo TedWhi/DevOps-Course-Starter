@@ -89,6 +89,31 @@ This will then prompt you to enter a Trello API Token, Trello API Key, and Trell
 
 When the playbook has completed, you will then be able to access the app at port 5000 on the IP address of your managed node.
 
+## Running the App in a Docker container
+
+The app can be run in both a production and a development docker container.
+
+To run the app in development mode you must build the development image and then spin up a container from it as follows:
+
+```bash
+docker build --target development --tag todo-app:dev .
+docker run --env-file ./.env -p 5000:5000 --mount "type=bind,source=$(pwd)/todo_app,target=/opt/todo_app" --detach todo-app:dev
+```
+
+The app can then be accessed at `localhost:5000`.
+
+Note that we pass in the source code as a bind mount. This (alongside enabling `FLASK_DEBUG`, which is done for you in the Dockerfile) means that any source code changes will be picked up by the application and immediately take effect on the application server.
+
+To run the app in production, you must build the production image and spin up the container from it:
+
+```bash
+docker build --target production --tag todo-app:prod .
+ocker run --env-file ./.env -p 5001:5000 todo-app:prod
+```
+The app can then be accessed at `localhost:5001`.
+
+Changes made to the source code will not affect the production application server.
+
 ## Unit Tests
 
 The repo uses [pytest](https://docs.pytest.org/en/8.0.x/) to implement its unit tests. Any new test files added to the `tests`
