@@ -97,7 +97,7 @@ To run the app in development mode you must build the development image and then
 
 ```bash
 docker build --target development --tag todo-app:dev .
-docker run --env-file ./.env -p 5000:5000 --mount "type=bind,source=$(pwd)/todo_app,target=/opt/todo_app" --detach todo-app:dev
+docker run --env-file ./.env -p 5000:5000 --mount "type=bind,source=$(pwd)/todo_app,target=/opt/todo_app/todo_app" --detach todo-app:dev
 ```
 
 The app can then be accessed at `localhost:5000`.
