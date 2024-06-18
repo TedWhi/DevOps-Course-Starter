@@ -108,7 +108,7 @@ To run the app in production, you must build the production image and spin up th
 
 ```bash
 docker build --target production --tag todo-app:prod .
-ocker run --env-file ./.env -p 5001:5000 todo-app:prod
+docker run --env-file ./.env -p 5001:5000 todo-app:prod
 ```
 The app can then be accessed at `localhost:5001`.
 
