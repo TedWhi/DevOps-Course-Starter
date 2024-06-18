@@ -4,4 +4,4 @@
 ansible
 .env
 tests
-todo_app/__pycache__
+**/__pycache__
