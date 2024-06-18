@@ -1,4 +1,5 @@
 FROM python:3.11-slim-buster as base
+RUN apt-get update && apt-get install curl -y
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /opt/todo_app
