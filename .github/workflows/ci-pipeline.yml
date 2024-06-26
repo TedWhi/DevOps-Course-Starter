@@ -1,5 +1,17 @@
 name: Continuous Integration
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - '.vscode/**'
+      - 'architecture_diagrams/**'
+      - 'ansible/**'
+  pull-request:
+    paths-ignore:
+      - 'README.md'
+      - '.vscode/**'
+      - 'architecture_diagrams/**'
+      - 'ansible/**'
 
 
 jobs:
