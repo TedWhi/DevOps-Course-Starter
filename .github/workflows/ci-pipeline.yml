@@ -1,0 +1,24 @@
+name: Continuous Integration
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - '.vscode/**'
+      - 'architecture_diagrams/**'
+      - 'ansible/**'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - '.vscode/**'
+      - 'architecture_diagrams/**'
+      - 'ansible/**'
+
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: docker build --target test --tag todo-app:test .  
+    - run: docker run --env-file ./.env.test todo-app:test

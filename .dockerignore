@@ -3,5 +3,4 @@
 .venv
 ansible
 .env
-tests
 **/__pycache__

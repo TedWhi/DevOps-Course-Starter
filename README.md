@@ -123,3 +123,19 @@ To run the unit tests, simply run:
 ```bash
 poetry run pytest
 ```
+
+### Running Unit tests with Docker
+
+It is also possible to run the unit tests for this repo in a Docker container.
+
+First you must build the test Docker image with the following command:
+```bash
+docker build --target test --tag todo-app:test .
+```
+
+Then, run the image with this command:
+```bash
+docker run --env-file ./.env.test todo-app:test
+```
+
+You should then see the test results outputted to the console.
