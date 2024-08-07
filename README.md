@@ -22,6 +22,10 @@ You can check poetry is installed by running `poetry --version` from a terminal.
 
 **Please note that after installing poetry you may need to restart VSCode and any terminals you are running before poetry will be recognised.**
 
+### Docker
+
+To run the app in a Docker container, you will also need a [Docker installation](https://docs.docker.com/engine/install/) and to have a [Docker Hub account](https://app.docker.com/signup?).
+
 ## Dependencies
 
 The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from your preferred shell:
@@ -113,6 +117,23 @@ docker run --env-file ./.env -p 5001:5000 todo-app:prod
 The app can then be accessed at `localhost:5001`.
 
 Changes made to the source code will not affect the production application server.
+
+## Running the container on Azure
+
+We can run the To-do app on Azure (at tedwhi-todo-app.azurewebsites.net) by deploying the container on an Azure App Service.
+
+First we must deploy the container image to Docker Hub, this can all be done from the CLI:
+```bash
+docker login
+docker build --target production --tag tedwhi/todo-app:prod .
+docker push tedwhi/todo-app:prod .
+```
+
+You should be able to see the image on Docker Hub. (https://hub.docker.com/r/tedwhi/todo-app)
+
+Then, we need to tell our Azure App Service to pull that latest container image and run it. We can do this by sending a `POST` request to our Azure App Service's Webhook.
+
+The Webhook URL can be found in the `Deployment Center` (sic) of the Azure App Service (`tedwhi-todo-app` in `cohort32-33_TedWhi_ProjectExercise` resource group). Simply copy this URL and send a `POST` request to it. The response will contain the URL of an Azure Log Stream where you can track the progress of updating the App Service.
 
 ## Unit Tests
 
